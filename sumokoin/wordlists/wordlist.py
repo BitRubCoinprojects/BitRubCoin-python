@@ -53,6 +53,8 @@ class Wordlist(with_metaclass(WordlistType)):
             out += [cls.word_list[w1], cls.word_list[w2], cls.word_list[w3]]
         checksum = cls.get_checksum(" ".join(out))
         out.append(checksum)
+        checksum_2 = cls.get_second_checksum(" ".join(out))
+        out.append(checksum_2)
         return " ".join(out)
 
     @classmethod
@@ -77,19 +79,29 @@ class Wordlist(with_metaclass(WordlistType)):
         :rtype: str
         """
         phrase_split = phrase.split(" ")
-        if len(phrase_split) < 12:
-            raise ValueError("Invalid mnemonic phrase")
-        if len(phrase_split) > 13:
-            # Standard format
-            phrase = phrase_split[:24]
-        else:
-            # MyMonero format
-            phrase = phrase_split[:12]
+        # Standard format
+        phrase = phrase_split[:24]
         wstr = "".join(word[:cls.unique_prefix_length] for word in phrase)
         wstr = bytearray(wstr.encode('utf-8'))
         z = ((crc32(wstr) & 0xffffffff) ^ 0xffffffff ) >> 0
         z2 = ((z ^ 0xffffffff) >> 0) % len(phrase)
         return phrase_split[z2]
+
+    @classmethod
+    def get_second_checksum(cls, phrase):
+        """Given a mnemonic word string + checksum,
+        return a string of the computed second checksum.
+
+        :rtype: str
+        """
+        phrase_split = phrase.split(" ")
+        # Standard format + checksum
+        phrase = phrase_split[:25]
+        wstr = "".join(word[:cls.unique_prefix_length] for word in phrase)
+        wstr = bytearray(wstr.encode('utf-8'))
+        z = ((crc32(wstr) & 0xffffffff) ^ 0xffffffff ) >> 0
+        z2 = ((z ^ 0xffffffff) >> 0) % len(cls.word_list)
+        return cls.word_list[z2]
 
 
 def get_wordlist(name):

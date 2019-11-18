@@ -34,6 +34,8 @@
 #   + support for 12/13-word seeds
 #   + simplified interface, changed exceptions (assertions -> explicit raise)
 #   + optimization
+#
+# Adapted for Sumokoin 26-word seed (Nov 18, 2019)
 
 from sumokoin import wordlists
 from sumokoin import ed25519
@@ -56,7 +58,7 @@ class Seed(object):
 
         :rtype: :class:`Seed <sumokoin.seed.Seed>`
         """
-        self.phrase = "" #13 or 25 word mnemonic word string
+        self.phrase = "" # 26 word mnemonic word string
         self.hex = "" # hexadecimal
 
         self.word_list = wordlists.get_wordlist(wordlist)
@@ -72,6 +74,11 @@ class Seed(object):
                 if len(seed_split) == 25:
                     # with checksum
                     self._validate_checksum()
+                if len(seed_split) == 26:
+                     # with checksum
+                    self._validate_checksum()
+                    # with second checksum
+                    self._validate_second_checksum()
                 self._decode_seed()
             elif len(seed_split) == 1:
                 # single string, probably hex, but confirm
@@ -96,14 +103,24 @@ class Seed(object):
         self.hex = self.word_list.decode(self.phrase)
 
     def _validate_checksum(self):
-        """Given a mnemonic word string, confirm seed checksum (last word) matches the computed checksum.
+        """Given a mnemonic word string, confirm seed checksum matches the computed checksum.
 
         :rtype: bool
         """
         phrase = self.phrase.split(" ")
-        if self.word_list.get_checksum(self.phrase) == phrase[-1]:
+        if self.word_list.get_checksum(self.phrase) == phrase[:25][-1]:
             return True
         raise ValueError("Invalid checksum")
+
+    def _validate_second_checksum(self):
+        """Given a mnemonic word string, confirm seed second checksum matches the computed checksum.
+
+        :rtype: bool
+        """
+        phrase = self.phrase.split(" ")
+        if self.word_list.get_second_checksum(self.phrase) == phrase[-1]:
+            return True
+        raise ValueError("Invalid second checksum")
 
     def sc_reduce(self, input):
         integer = ed25519.decodeint(input)
@@ -119,11 +136,11 @@ class Seed(object):
         return h.digest()
 
     def secret_spend_key(self):
-        a = self._hex_seed_keccak() if self.is_mysumokoin() else unhexlify(self.hex)
+        a = unhexlify(self.hex)
         return self.sc_reduce(a)
 
     def secret_view_key(self):
-        b = self._hex_seed_keccak() if self.is_mysumokoin() else unhexlify(self.secret_spend_key())
+        b = unhexlify(self.secret_spend_key())
         h = keccak_256()
         h.update(b)
         return self.sc_reduce(h.digest())
@@ -150,7 +167,7 @@ class Seed(object):
         if net not in ('mainnet', 'testnet', 'stagenet'):
             raise ValueError(
                 "Invalid net argument. Must be one of ('mainnet', 'testnet', 'stagenet').")
-        netbyte = 18 if net == 'mainnet' else 53 if net == 'testnet' else 24
+        netbyte = 2598874625 if net == 'mainnet' else 2599083265 if net == 'testnet' else 2599083265
         data = "{:x}{:s}{:s}".format(netbyte, self.public_spend_key(), self.public_view_key())
         h = keccak_256()
         h.update(unhexlify(data))
