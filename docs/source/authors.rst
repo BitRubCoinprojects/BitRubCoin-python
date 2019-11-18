@@ -3,6 +3,7 @@ Authors
 
 * Michał Sałaban <michal@salaban.info>
 * MoneroPy Developers (``monero/base58.py`` taken from `MoneroPy`_)
+* Vu Quang (Sumokoin project)
 
 .. _MoneroPy: https://github.com/bigreddmachine/MoneroPy
 

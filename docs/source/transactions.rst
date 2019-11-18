@@ -1,11 +1,11 @@
 Sending and receiving payments
 ==============================
 
-Payments in Monero desire a bit of explanation even for people experienced with cryptocurrency.
+Payments in Sumokoin desire a bit of explanation even for people experienced with cryptocurrency.
 
-The main difference from coins which use transparent blockchain is that Monero transactions do not
+The main difference from coins which use transparent blockchain is that Sumokoin transactions do not
 disclose sender or recipient's address, nor they tell what the amount is. This is a great feature
-that makes Monero stand out, however at the same time it causes difficulties. In the outgoing
+that makes Sumokoin stand out, however at the same time it causes difficulties. In the outgoing
 payments you won't see the recipient address and, in the incoming ones you won't see the sender.
 
 For this reason, there are two classes representing those, ``IncomingPayment`` and
@@ -22,7 +22,7 @@ outgoing payments:
 .. code-block:: python
 
     In [4]: wallet.incoming()
-    Out[4]: 
+    Out[4]:
     [in: e9a71c01875bec20812f71d155bfabf42024fde3ec82475562b817dcc8cbf8dc @ 1087530 2.120000000000 id=cb248105ea6a9189,
      in: a0b876ebcf7c1d499712d84cedec836f9d50b608bb22d6cb49fd2feae3ffed14 @ 1087606 1.000000000000 id=0166d8da6c0045c51273dd65d6f63734beb8a84e0545a185b2cfd053fced9f5d,
      in: d29264ad317e8fdb55ea04484c00420430c35be7b3fe6dd663f99aebf41a786c @ 1087858 3.140000000000 id=03f6649304ea4cb2,
@@ -36,7 +36,7 @@ outgoing payments:
      in: 4ea70add5d0c7db33557551b15cd174972fcfc73bf0f6a6b47b7837564b708d3 @ 1087530 4.000000000000 id=f75ad90e25d71a12]
 
     In [5]: wallet.outgoing()
-    Out[5]: 
+    Out[5]:
     [out: a8829744952facbfdaab21ca193298edb1fa16f688cd5dbcdff3ed3968155f28 @ 1088411 2.220000000000 id=0000000000000000,
      out: e291fe40c6102a6193c82ac33227c08e5b30a863dba1bc63e13043a25abbb97a @ 1088523 0.123000000000 id=0000000000000000,
      out: 40de45db57eb87eb8395baf5c1dc705602938317d043f463e68ed85b7108f9f3 @ 1088184 1.000000000000 id=0000000000000000,
@@ -62,7 +62,7 @@ For example, you may ask for payments from a recent period, limiting the blockch
 .. code-block:: python
 
     In [1]: wallet.incoming(min_height=1088000)
-    Out[1]: 
+    Out[1]:
     [in: f349c6badfa7f6e46666db3996b569a05c6ac4e85417551ec208d96f8a37294a @ 1088400 1.000000000000 id=0000000000000000,
      in: bc8b7ef53552c2d4bce713f513418894d0e2c8dcaf72e681e1d4d5a202f1eb62 @ 1088394 8.000000000000 id=0000000000000000,
      in: 41304bbb514d1abdfdb0704bf70f8d2ec4e753c57aa34b6d0525631d79113b87 @ 1088400 1.000000000000 id=1f2510a597bd634bbd130cf21e63b4ad01f4565faf0d3eb21589f496bf28f7f2]
@@ -72,7 +72,7 @@ Or ask for specific payment ID:
 .. code-block:: python
 
     In [2]: wallet.incoming(payment_id='f75ad90e25d71a12')
-    Out[2]: 
+    Out[2]:
     [in: f34b495cec77822a70f829ec8a5a7f1e727128d62e6b1438e9cb7799654d610e @ 1087601 3.000000000000 id=f75ad90e25d71a12,
      in: 5c3ab739346e9d98d38dc7b8d36a4b7b1e4b6a16276946485a69797dbf887cd8 @ 1087530 10.000000000000 id=f75ad90e25d71a12,
      in: 4ea70add5d0c7db33557551b15cd174972fcfc73bf0f6a6b47b7837564b708d3 @ 1087530 4.000000000000 id=f75ad90e25d71a12]
@@ -88,8 +88,8 @@ You may also filter payments by the address:
 
 .. code-block:: python
 
-    In [4]: wallet.incoming(local_address='BhE3cQvB7VF2uuXcpXp28Wbadez6GgjypdRS1F1Mzqn8Advd6q8VfaX8ZoEDobjejrMfpHeNXoX8MjY8q8prW1PEALgr1En')
-    Out[4]: 
+    In [4]: wallet.incoming(local_address='Sutoe7aoJy357oxqg5E1nDQa3PFybMxk2EnCnwqvyXhaBJtGe4q7QHLAXmu81AfUTEhTy4ogDsFVMD4BFkKLcCWCRNi4ZyD7RH1')
+    Out[4]:
     [in: 5ef7ead6a041101ed326568fbb59c128403cba46076c3f353cd110d969dac808 @ 1087601 7.000000000000 id=0000000000000000,
      in: 41304bbb514d1abdfdb0704bf70f8d2ec4e753c57aa34b6d0525631d79113b87 @ 1088400 1.000000000000 id=1f2510a597bd634bbd130cf21e63b4ad01f4565faf0d3eb21589f496bf28f7f2,
      in: f34b495cec77822a70f829ec8a5a7f1e727128d62e6b1438e9cb7799654d610e @ 1087601 3.000000000000 id=f75ad90e25d71a12]
@@ -152,7 +152,7 @@ them the transactions they do not have.
 
     **With significant amounts you should also wait for a few confirmations to appear.** The top
     of the blockchain sometimes gets replaced by a competing block. It is a popular practice to
-    wait for at least 6 confirmations to appear, which is also the standard in Monero before funds
+    wait for at least 6 confirmations to appear, which is also the standard in Sumokoin before funds
     get unlocked and can be used in subsequent transactions.
 
 However, it is possible to query the wallet for transactions in the mempool. You may use them as
@@ -186,7 +186,7 @@ You may as well query for both confirmed and unconfirmed transactions using
 Sending payments
 ----------------
 
-There are two methods for sending Monero. For a single payment use the ``transfer`` method of
+There are two methods for sending Sumokoin. For a single payment use the ``transfer`` method of
 ``Wallet`` or ``Account`` object.
 
 It returns a list of resulting transactions. In most cases it will contain only one element, but
@@ -198,7 +198,7 @@ payment into multiple transactions.
     In [15]: from decimal import Decimal
 
     In [16]: txs = wallet.transfer(
-        'BdYguH2fVo3G37o8bKp8RbTRuRsTpvBaUdxeo9fj6LFrE2XqNMYKytvBLXvNtnbmXtDUwrKLcpeH4NCuhFL2cXikDV4Rzq6',
+        'Sutoe7aoJy357oxqg5E1nDQa3PFybMxk2EnCnwqvyXhaBJtGe4q7QHLAXmu81AfUTEhTy4ogDsFVMD4BFkKLcCWCRNi4ZyD7RH1',
         Decimal('2.54'))
 
     In [17]: txs
@@ -220,9 +220,9 @@ to use ``transfer_multiple``:
 .. code-block:: python
 
     In [25]: txs = wallet.transfer_multiple([
-        ('Ba8xvGs5qw1JfiQVJDj8D28NuyL7MuKsB59jtnx2q1ydH4CazTWfJo9iKvTyeYEoYYQ6RT6A1DfoSj1UiwssKfdjUNumu2K', Decimal('0.11')),
-        ('BcVT4P2r1Md1DftWBDKHdK38Md6NtFPu4Heof8atNpxx7zbKfhMtRmUUMooU4cJuH4EKXrpke5A77XVbPhekWuiCSTaDFjw', Decimal('1.22')),
-        ('Bf2xXxMLdH9gyh35o6LEyKCz6ZsPRmcujBU9rFK81Brd8HmynFj16KFHAYCETU625hY2x7XBH7CvjCHAC6bxQfsjN77Jv7e', Decimal('2.33'))])
+        ('Sutoe7aoJy357oxqg5E1nDQa3PFybMxk2EnCnwqvyXhaBJtGe4q7QHLAXmu81AfUTEhTy4ogDsFVMD4BFkKLcCWCRNi4ZyD7RH1', Decimal('0.11')),
+        ('SutoeBob9AAGXJFM46BEwBKL1LsxgwszDLhvwTSC6nu9h6Y2VMUkdPgMX9bgdgYWNx8Zsnvond3tq3e7KGwGKbu6D7K6k4zfz8g', Decimal('1.22')),
+        ('Sutoe71zcjGgj9h22vXV4VcPRbJ9pTkSQ9n2kyJkfi2ZU4go5pkzQ453QJP3ESECxoW8cGbttCMFDTfubwygq6cWF9599Y2X8ms', Decimal('2.33'))])
 
     In [26]: txs
     Out[26]: [2785a1ad7f6d794802ea27a00e679f8c9706be0ec0b78b73d3182c551c6d69d2]
@@ -246,5 +246,5 @@ ring size or unlock time. See API reference below for details.
 API reference
 -------------
 
-.. automodule:: monero.transaction
+.. automodule:: sumokoin.transaction
    :members:

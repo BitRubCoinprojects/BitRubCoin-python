@@ -1,5 +1,5 @@
 Exceptions
 ==========
 
-.. automodule:: monero.exceptions
+.. automodule:: sumokoin.exceptions
    :members:

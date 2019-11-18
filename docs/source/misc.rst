@@ -4,5 +4,5 @@ Miscellaneous functions, types and constants
 API reference
 -------------
 
-.. automodule:: monero.numbers
+.. automodule:: sumokoin.numbers
    :members:

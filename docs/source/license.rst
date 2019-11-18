@@ -3,9 +3,12 @@ License
 
 BSD 3-Clause License
 
+Copyright (c) 2019 The Sumokoin Project
+
 Copyright (c) 2017 Michał Sałaban
 
 Copyright (c) 2016 The MoneroPy Developers
+
 
 All rights reserved.
 
