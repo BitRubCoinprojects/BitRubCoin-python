@@ -13,7 +13,8 @@ if sys.version_info < (3,): # pragma: no cover
 else:                       # pragma: no cover
     _str_types = (str, bytes)
 
-_ADDR_REGEX = re.compile(r'^Su[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{96,97}$')
+_ADDR_REGEX = re.compile(r'^Su[m,t]o[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{95}$')
+_SADDR_REGEX = re.compile(r'^Su[b,s][123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{95}$')
 _IADDR_REGEX = re.compile(r'^Su[m,t]i[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{106}$')
 
 def netbyte_int(netbyte):
@@ -24,8 +25,8 @@ class BaseAddress(object):
 
     def __init__(self, addr, label=None):
         addr = addr.decode() if isinstance(addr, bytes) else str(addr)
-        if not _ADDR_REGEX.match(addr):
-            raise ValueError("Address must be 99 characters long base58-encoded string, "
+        if not (_ADDR_REGEX.match(addr) or _SADDR_REGEX.match(addr)):
+            raise ValueError("Address must be either 99 or 98 characters long base58-encoded string, "
                 "is {addr} ({len} chars length)".format(addr=addr, len=len(addr)))
         self._decode(addr)
         self.label = label or self.label
@@ -79,7 +80,7 @@ class BaseAddress(object):
 
 
 class Address(BaseAddress):
-    """Monero address.
+    """Sumokoin address.
 
     Address of this class is the master address for a :class:`Wallet <sumokoin.wallet.Wallet>`.
 
@@ -204,13 +205,20 @@ def address(addr, label=None):
         netbyte = int(base58.decode(addr)[0:8], 16)
         if netbyte in Address._valid_netbytes:
             return Address(addr, label=label)
-        elif netbyte in SubAddress._valid_netbytes:
-            return SubAddress(addr, label=label)
         raise ValueError("Invalid address netbyte {nb}. Allowed values are: {allowed}".format(
             nb='%02x' % netbyte,
             allowed=", ".join(map(
                 lambda b: '%02x' % b,
-                sorted(Address._valid_netbytes + SubAddress._valid_netbytes)))))
+                sorted(Address._valid_netbytes)))))
+    elif _SADDR_REGEX.match(addr):
+        netbyte = int(base58.decode(addr)[0:6], 16)
+        if netbyte in SubAddress._valid_netbytes:
+            return SubAddress(addr, label=label)
+        raise ValueError("Invalid subaddress netbyte {nb}. Allowed values are: {allowed}".format(
+            nb='%02x' % netbyte,
+            allowed=", ".join(map(
+                lambda b: '%02x' % b,
+                sorted(SubAddress._valid_netbytes)))))
     elif _IADDR_REGEX.match(addr):
         return IntegratedAddress(addr)
     raise ValueError("Address must be either 98, 99 or 110 characters long base58-encoded string, "
