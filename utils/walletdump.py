@@ -4,9 +4,9 @@ import logging
 import operator
 import re
 
-from monero import exceptions
-from monero.backends.jsonrpc import JSONRPCWallet, RPCError
-from monero.wallet import Wallet
+from sumokoin import exceptions
+from sumokoin.backends.jsonrpc import JSONRPCWallet, RPCError
+from sumokoin.wallet import Wallet
 
 def url_data(url):
     gs = re.compile(
@@ -16,7 +16,7 @@ def url_data(url):
 
 def get_wallet():
     argsparser = argparse.ArgumentParser(description="Display wallet contents")
-    argsparser.add_argument('wallet_rpc_url', nargs='?', type=url_data, default='127.0.0.1:18082',
+    argsparser.add_argument('wallet_rpc_url', nargs='?', type=url_data, default='127.0.0.1:19736',
         help="Wallet RPC URL [user[:password]@]host[:port]")
     argsparser.add_argument('-v', dest='verbosity', action='count', default=0,
         help="Verbosity (repeat to increase; -v for INFO, -vv for DEBUG")
@@ -64,7 +64,7 @@ print(
         unlocked=w.balance(unlocked=True)))
 try:
     seed = w.seed()
-except (exceptions.WalletIsNotDeterministic, RPCError): # FIXME: Remove RPCError once PR#4563 is merged in monero
+except (exceptions.WalletIsNotDeterministic, RPCError): # FIXME: Remove RPCError once PR#4563 is merged in sumokoin
     seed = '[--- wallet is not deterministic and has no seed ---]'
 print(
     "Keys:\n" \

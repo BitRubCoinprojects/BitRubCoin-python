@@ -7,11 +7,11 @@ import os
 import random
 import re
 
-import monero
-from monero.address import address
-from monero.numbers import PaymentID, as_monero
-from monero.wallet import Wallet
-from monero.backends.jsonrpc import JSONRPCWallet
+import sumokoin
+from sumokoin.address import address
+from sumokoin.numbers import PaymentID, as_sumokoin
+from sumokoin.wallet import Wallet
+from sumokoin.backends.jsonrpc import JSONRPCWallet
 
 def url_data(url):
     gs = re.compile(
@@ -21,12 +21,12 @@ def url_data(url):
 
 def destpair(s):
     addr, amount = s.split(':')
-    return (address(addr), as_monero(amount))
+    return (address(addr), as_sumokoin(amount))
 
-argsparser = argparse.ArgumentParser(description="Transfer Monero")
+argsparser = argparse.ArgumentParser(description="Transfer Sumokoin")
 argsparser.add_argument('-v', dest='verbosity', action='count', default=0,
     help="Verbosity (repeat to increase; -v for INFO, -vv for DEBUG")
-argsparser.add_argument('wallet_rpc_url', nargs='?', type=url_data, default='127.0.0.1:18082',
+argsparser.add_argument('wallet_rpc_url', nargs='?', type=url_data, default='127.0.0.1:19736',
     help="Daemon URL [user[:password]@]host[:port]")
 argsparser.add_argument('-t', dest='timeout', type=int, default=30, help="Request timeout")
 argsparser.add_argument('-a', dest='account', default=0, type=int, help="Source account index")
@@ -42,7 +42,7 @@ argsparser.add_argument('--save', dest='outdir', nargs='?', default=None, const=
 argsparser.add_argument('destinations', metavar='address:amount', nargs='+', type=destpair,
     help="Destination address and amount (one or more pairs)")
 args = argsparser.parse_args()
-prio = getattr(monero.prio, args.prio.upper())
+prio = getattr(sumokoin.prio, args.prio.upper())
 
 level = logging.WARNING
 if args.verbosity == 1:

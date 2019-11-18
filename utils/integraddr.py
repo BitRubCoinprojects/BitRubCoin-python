@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import sys
-from monero.address import address
-from monero.numbers import PaymentID
+from sumokoin.address import address
+from sumokoin.numbers import PaymentID
 
 USAGE = "{0} <address> <payment_id>"
 
