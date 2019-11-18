@@ -145,6 +145,27 @@ class SubAddress(BaseAddress):
     _valid_netbytes = (10150688, 10152564, 10152564)
     # NOTE: _valid_netbytes order is (mainnet, testnet, stagenet)
 
+    def is_mainnet(self):
+        """Returns `True` if the address belongs to mainnet.
+
+        :rtype: bool
+        """
+        return netbyte_int(self._decoded[0:3]) == self._valid_netbytes[0]
+
+    def is_testnet(self):
+        """Returns `True` if the address belongs to testnet.
+
+        :rtype: bool
+        """
+        return netbyte_int(self._decoded[0:3]) == self._valid_netbytes[1]
+
+    def is_stagenet(self):
+        """Returns `True` if the address belongs to stagenet.
+
+        :rtype: bool
+        """
+        return netbyte_int(self._decoded[0:3]) == self._valid_netbytes[2]
+
     def with_payment_id(self, _):
         raise TypeError("SubAddress cannot be integrated with payment ID")
 
