@@ -141,11 +141,21 @@ class SubAddress(BaseAddress):
     Any type of address which is not the master one for a wallet.
     """
 
-    _valid_netbytes = (2598576296, 2599056584, 2599056584)
+    _valid_netbytes = (10150688, 10152564, 10152564)
     # NOTE: _valid_netbytes order is (mainnet, testnet, stagenet)
 
     def with_payment_id(self, _):
         raise TypeError("SubAddress cannot be integrated with payment ID")
+
+    def _decode(self, address):
+        self._decoded = bytearray(unhexlify(base58.decode(address)))
+        checksum = self._decoded[-4:]
+        if checksum != keccak_256(self._decoded[:-4]).digest()[:4]:
+            raise ValueError("Invalid checksum in address {}".format(address))
+        if netbyte_int(self._decoded[0:3]) not in self._valid_netbytes:
+            raise ValueError("Invalid address netbyte {nb}. Allowed values are: {allowed}".format(
+                nb='%02x' % netbyte_int(self._decoded[0:3]),
+                allowed=", ".join(map(lambda b: '%02x' % b, self._valid_netbytes))))
 
 
 class IntegratedAddress(Address):

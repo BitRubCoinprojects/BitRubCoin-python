@@ -16,7 +16,7 @@ _log = logging.getLogger(__name__)
 
 class JSONRPCDaemon(object):
     """
-    JSON RPC backend for Monero daemon
+    JSON RPC backend for Sumokoin daemon
 
     :param protocol: `http` or `https`
     :param host: host name or IP
@@ -25,7 +25,7 @@ class JSONRPCDaemon(object):
     :param timeout: request timeout
     :param verify_ssl_certs: verify SSL certificates when connecting
     """
-    def __init__(self, protocol='http', host='127.0.0.1', port=18081, path='/json_rpc',
+    def __init__(self, protocol='http', host='127.0.0.1', port=19734, path='/json_rpc',
             user='', password='', timeout=30, verify_ssl_certs=True):
         self.url = '{protocol}://{host}:{port}'.format(
                 protocol=protocol,
@@ -120,7 +120,7 @@ class JSONRPCDaemon(object):
 
 class JSONRPCWallet(object):
     """
-    JSON RPC backend for Monero wallet (``monero-wallet-rpc``)
+    JSON RPC backend for Sumokoin wallet (``sumo-wallet-rpc``)
 
     :param protocol: `http` or `https`
     :param host: host name or IP
@@ -133,7 +133,7 @@ class JSONRPCWallet(object):
     """
     _master_address = None
 
-    def __init__(self, protocol='http', host='127.0.0.1', port=18088, path='/json_rpc',
+    def __init__(self, protocol='http', host='127.0.0.1', port=19738, path='/json_rpc',
             user='', password='', timeout=30, verify_ssl_certs=True):
         self.url = '{protocol}://{host}:{port}/json_rpc'.format(
                 protocol=protocol,
